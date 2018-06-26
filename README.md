@@ -39,6 +39,8 @@ Overall both files uses event driven programming. The main difference between bo
 
 ![motion_planning](./Media/Event_Driven_Programming_Planning.png)
 
+The planning state
+
 ### Implementing Your Path Planning Algorithm
 
 #### 1. Set your global home position
@@ -67,7 +69,12 @@ Minimal requirement here is to modify the code in planning_utils() to update the
 #### 6. Cull waypoints
 For this step you can use a collinearity test or ray tracing method like Bresenham. The idea is simply to prune your path of unnecessary waypoints. Explain the code you used to accomplish this step.
 
+```python
 
+import tensorflow
+print('hello')
+
+```
 
 ### Execute the flight
 #### 1. Does it work?
