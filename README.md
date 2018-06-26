@@ -47,7 +47,7 @@ class Fly(object):
     plot: True or False
     """
     def __init__(self, conn, target = target_examples[1], module = 'grid',
-                 pruning = True, plot = True):
+                 pruning = True, plot = False):
 
         self.conn = conn
         self.target = target
