@@ -31,9 +31,13 @@ You're reading it! Below I describe how I addressed each rubric point and where 
 #### 1. Explain the functionality of what's provided in `motion_planning.py` and `planning_utils.py`
 Overall both files uses event driven programming. The main difference between both are the number of states and the transitions as follow:
 
-1. In the backyard_flyer_solution.py the transitions are as noted in the figure
+1. In the `backyard_flyer_solution.py` the transitions are as noted in the figure
 
 ![backyard_flyer_solution](./Media/Event_Driven_Programming.png)
+
+2. While in the `motion_planning.py` the transitions are as follow
+
+![motion_planning](./Media/Event_Driven_Programming_Planning.png)
 
 ### Implementing Your Path Planning Algorithm
 
