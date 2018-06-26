@@ -64,24 +64,90 @@ This is another step in adding flexibility to the start location. As long as it 
 This step is to add flexibility to the desired goal location. Should be able to choose any (lat, lon) within the map and have it rendered to a goal location on the grid.
 
 #### 5. Modify A* to include diagonal motion (or replace A* altogether)
-Minimal requirement here is to modify the code in planning_utils() to update the A* implementation to include diagonal motions on the grid that have a cost of sqrt(2), but more creative solutions are welcome. Explain the code you used to accomplish this step.
+I defined 4 new actions which corresponds with all possible diagnoal motions and I defined when are these considered a valid actions as follow.
+
+```python
+# diagonal Actions
+
+SOUTHEAST = (1, 1, np.sqrt(2))
+EASTNORTH = (1, -1, np.sqrt(2))
+NORTHWEST = (-1, -1, np.sqrt(2))
+WESTSOUTH = (-1, 1, np.sqrt(2))
+
+# Diagnoal Valid Actions. Basically constructed based on combinations
+# of the above
+if (x + 1 > n or y + 1 > m or grid[x + 1, y] == 1 or grid[x, y + 1] == 1):
+    valid_actions.remove(Action.SOUTHEAST)
+
+if (y + 1 > m or x - 1 < 0 or grid[x, y + 1] == 1 or grid[x - 1, y] == 1):
+    valid_actions.remove(Action.EASTNORTH)
+
+if (x - 1 < 0 or y - 1 < 0 or grid[x - 1, y] == 1 or grid[x, y - 1] == 1):
+    valid_actions.remove(Action.NORTHWEST)
+
+if (y - 1 < 0 or x + 1 > n or grid[x, y - 1] == 1 or grid[x + 1, y] == 1):
+    valid_actions.remove(Action.WESTSOUTH)
+
+```
 
 #### 6. Cull waypoints
-For this step you can use a collinearity test or ray tracing method like Bresenham. The idea is simply to prune your path of unnecessary waypoints. Explain the code you used to accomplish this step.
+The approach I used to prune waypoints is a combination of collinearity and bresenham.
 
 ```python
 
-import tensorflow
-print('hello')
+def collinearity_bresenham(grid, path, epsilon=1e-6):
+    """ Assess collinearity through path points """
+
+    def point(p):
+        """ converting points into a square matrix """
+        return np.array([p[0], p[1], 1.])
+
+    def collinearity_test(p1, p2, p3, epsilon=epsilon):
+        """ Calculating the determinant and checking if < epsilon """
+        collinear = False
+        mat = np.vstack((point(p1), point(p2), point(p3)))
+        det = np.linalg.det(mat)
+        if det < epsilon:
+            collinear = True
+
+        return collinear
+
+    def find_in_grid(point):
+        """ Used by bresenham to find if the grid cell is an obstacle """
+        if grid[point[0], point[1]] == 1:
+            return 1
+        else:
+            return 0
+
+    def prune_bresenham(p1, p3):
+        """ Uses bresenham algorithm to prune the path """
+        error_margin = 1 # represent only one grid is overlapped with an obstacle.
+        prune = True
+        cells = list(bresenham(p1[0], p1[1], p3[0], p3[1]))
+        ingrid = np.array(list(map(find_in_grid, cells)), dtype=np.float64)
+        if np.sum(ingrid) > error_margin:
+            prune = False
+        return prune
+
+    num =0
+    while num < len(path) -2:
+        # I had some difficulty using a for loop so I ended up just using a
+        # a while loop here
+        if (collinearity_test(p1=path[num], p2=path[num+1], p3=path[num+2],\
+            epsilon=epsilon) and prune_bresenham(p1=path[num], p3=path[num+2])) or\
+            prune_bresenham(p1=path[num], p3=path[num+2]):
+            path.pop(num+1)
+            # we need to subtract one here because if we prune point 2 in a
+            # a list [1,2,3], on the next iteration we will miss point 3 as
+            # a being a possible point to prune withouth the num -= 1 below.
+            num -= 1
+
+        num += 1
+
+    return path
 
 ```
 
 ### Execute the flight
 #### 1. Does it work?
 It works!
-
-### Double check that you've met specifications for each of the [rubric](https://review.udacity.com/#!/rubrics/1534/view) points.
-
-# Extra Challenges: Real World Planning
-
-For an extra challenge, consider implementing some of the techniques described in the "Real World Planning" lesson. You could try implementing a vehicle model to take dynamic constraints into account, or implement a replanning method to invoke if you get off course or encounter unexpected obstacles.
