@@ -3,6 +3,10 @@
 
 ---
 
+### Background:
+This project is part of the AutoFlying Car Nanodegree. The code is based on the simulation provided by Udacity.
+
+## [Rubric](https://review.udacity.com/#!/rubrics/1534/view) Points
 
 # Required Steps for a Passing Submission:
 1. Load the 2.5D map in the colliders.csv file describing the environment.
@@ -14,8 +18,6 @@
 7. Write it up.
 8. Congratulations!  Your Done!
 
-## [Rubric](https://review.udacity.com/#!/rubrics/1534/view) Points
-### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
 
 ---
 ### Writeup / README
@@ -27,17 +29,11 @@ You're reading it! Below I describe how I addressed each rubric point and where 
 ### Explain the Starter Code
 
 #### 1. Explain the functionality of what's provided in `motion_planning.py` and `planning_utils.py`
-These scripts contain a basic planning implementation that includes...
+Overall both files uses event driven programming. The main difference between both are the number of states and the transitions as follow:
 
-And here's a lovely image of my results (ok this image has nothing to do with it, but it's a nice example of how to include images in your writeup!)
-![Top Down View](./misc/high_up.png)
+1. In the backyard_flyer_solution.py the transitions are as noted in the figure
 
-Here's | A | Snappy | Table
---- | --- | --- | ---
-1 | `highlight` | **bold** | 7.41
-2 | a | b | c
-3 | *italic* | text | 403
-4 | 2 | 3 | abcd
+![backyard_flyer_solution](./Media/Event_Driven_Programming.png)
 
 ### Implementing Your Path Planning Algorithm
 
