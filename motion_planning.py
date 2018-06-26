@@ -158,10 +158,10 @@ class MotionPlanning(Drone):
         self.set_home_position(lan0, lat0, 0)
 
         # TODO: retrieve current global position
-        current_gloabl_position = self.global_position
+        current_global_position = self.global_position
 
         # TODO: convert to current local position using global_to_local()
-        current_local_position = global_to_local(current_gloabl_position, self.global_home)
+        current_local_position = global_to_local(current_global_position, self.global_home)
 
         print('global home {0}, position {1}, local position {2}'.format(self.global_home, self.global_position,
                                                                          self.local_position))

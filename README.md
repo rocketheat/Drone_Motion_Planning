@@ -70,27 +70,43 @@ class Fly(object):
 ### Implementing Your Path Planning Algorithm
 
 #### 1. Set your global home position
-Here students should read the first line of the csv file, extract lat0 and lon0 as floating point values and use the self.set_home_position() method to set global home. Explain briefly how you accomplished this in your code.
+While ignoring the rest of the data, I opened the ```colliders.csv``` file and using the first line we obtained lat0 and lon0. We then set it to home position as follow.
 
-
-And here is a lovely picture of our downtown San Francisco environment from above!
-![Map of SF](./misc/map.png)
+```python
+# setting home position to (lan0, lat0, 0)
+self.set_home_position(lan0, lat0, 0)
+```
 
 #### 2. Set your current local position
-Here as long as you successfully determine your local position relative to global home you'll be all set. Explain briefly how you accomplished this in your code.
+For the current local position, I obtained the current global position using self.global_position and then convert it to local position using global_to_local function
 
+```python
+# TODO: retrieve current global position
+current_global_position = self.global_position
 
-Meanwhile, here's a picture of me flying through the trees!
-![Forest Flying](./misc/in_the_trees.png)
+# TODO: convert to current local position using global_to_local()
+current_local_position = global_to_local(current_global_position, self.global_home)
+```
 
 #### 3. Set grid start position from local position
-This is another step in adding flexibility to the start location. As long as it works you're good to go!
+To set the grid start location I used the following codes with the safety offsets.
+
+```python
+# TODO: convert start position to current position rather than map center
+grid_start = (int(np.ceil(current_local_position[0]-north_offset)), int(np.ceil(current_local_position[1] - east_offset)))
+
+# Set goal as some arbitrary position on the grid
+# TODO: adapt to set goal as latitude / longitude position and convert
+goal_north, goal_east, goal_alt = global_to_local(self.target, self.global_home)
+grid_goal = (int(np.ceil(goal_north - north_offset)), int(np.ceil(goal_east - east_offset)))
+```
 
 #### 4. Set grid goal position from geodetic coords
-This step is to add flexibility to the desired goal location. Should be able to choose any (lat, lon) within the map and have it rendered to a goal location on the grid.
+I used global_to_local function to get the local coordinates from geodetic ones. I created three target_examples that can be used to test the drone. These can be accessed in the class Fly. 
 
 #### 5. Modify A* to include diagonal motion (or replace A* altogether)
 I defined 4 new actions which corresponds with all possible diagnoal motions and I defined when are these considered a valid actions as follow.
+For the graph A* algorithm I used the networkx adjusted A* algorithm.
 
 ```python
 # diagonal Actions
