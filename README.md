@@ -8,17 +8,6 @@ This project is part of the AutoFlying Car Nanodegree. The code is based on the 
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/1534/view) Points
 
-# Required Steps for a Passing Submission:
-1. Load the 2.5D map in the colliders.csv file describing the environment.
-2. Discretize the environment into a grid or graph representation.
-3. Define the start and goal locations.
-4. Perform a search using A* or other search algorithm.
-5. Use a collinearity test or ray tracing method (like Bresenham) to remove unnecessary waypoints.
-6. Return waypoints in local ECEF coordinates (format for `self.all_waypoints` is [N, E, altitude, heading], where the drone’s start location corresponds to [0, 0, 0, 0].
-7. Write it up.
-8. Congratulations!  Your Done!
-
-
 ---
 ### Writeup / README
 
@@ -102,7 +91,7 @@ grid_goal = (int(np.ceil(goal_north - north_offset)), int(np.ceil(goal_east - ea
 ```
 
 #### 4. Set grid goal position from geodetic coords
-I used global_to_local function to get the local coordinates from geodetic ones. I created three target_examples that can be used to test the drone. These can be accessed in the class Fly. 
+I used global_to_local function to get the local coordinates from geodetic ones. I created three target_examples that can be used to test the drone. These can be accessed in the class Fly.
 
 #### 5. Modify A* to include diagonal motion (or replace A* altogether)
 I defined 4 new actions which corresponds with all possible diagnoal motions and I defined when are these considered a valid actions as follow.
