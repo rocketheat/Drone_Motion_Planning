@@ -340,7 +340,7 @@ def collinearity_bresenham(grid, path, epsilon=1e-6):
             path.pop(num+1)
             # we need to subtract one here because if we prune point 2 in a
             # a list [1,2,3], on the next iteration we will miss point 3 as
-            # a being a possible point to prune without the num -= 1 below.
+            # being a possible point to prune without the num -= 1 below.
             num -= 1
 
         num += 1
