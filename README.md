@@ -4,7 +4,7 @@
 ---
 
 ### Background:
-This project is part of the AutoFlying Car Nanodegree. The code is based on the simulation provided by Udacity.
+This project is part of the AutoFlying Car Nanodegree. The code is based on the simulation provided by Udacity at https://github.com/udacity/FCND-Motion-Planning
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/1534/view) Points
 
@@ -39,7 +39,33 @@ Overall both files uses event driven programming. The main difference between bo
 
 ![motion_planning](./Media/Event_Driven_Programming_Planning.png)
 
-The planning state
+The planning follow this pattern:
+![Plan Path](./Media/plan_path.png)
+
+I created a class Fly to simplify the interaction with the drone. You can either try grid or graphs, you can prune or not, you can also plot or not the plans
+
+```python
+class Fly(object):
+    """
+    I created this class to simplify the interaction with the drone.
+    My goal here is to allow possible combinations of situations for example
+    test graph with breadth first search and combination of pruning methods
+
+    Parameters:
+    target_examples: three options 1, 2, 3
+    module: graph or grid
+    pruning: True or False
+    plot: True or False
+    """
+    def __init__(self, conn, target = target_examples[1], module = 'grid',
+                 pruning = True, plot = True):
+
+        self.conn = conn
+        self.target = target
+        self.module = module
+        self.pruning = pruning
+        self.plot = plot
+```
 
 ### Implementing Your Path Planning Algorithm
 
@@ -92,6 +118,8 @@ if (y - 1 < 0 or x + 1 > n or grid[x, y - 1] == 1 or grid[x + 1, y] == 1):
 
 #### 6. Cull waypoints
 The approach I used to prune waypoints is a combination of collinearity and bresenham.
+This function is located in the ```planning_utils.py```.
+The algorithm checks every three points. If there is collinearity then checks using bresenham that there is no obstacles along the line between point 1 and 3 since we will be removing point 2. If so it will remove the middle point. It also uses bresenham by itself to remove the middle points if possible.
 
 ```python
 
@@ -139,7 +167,7 @@ def collinearity_bresenham(grid, path, epsilon=1e-6):
             path.pop(num+1)
             # we need to subtract one here because if we prune point 2 in a
             # a list [1,2,3], on the next iteration we will miss point 3 as
-            # a being a possible point to prune withouth the num -= 1 below.
+            # a being a possible point to prune without the num -= 1 below.
             num -= 1
 
         num += 1
