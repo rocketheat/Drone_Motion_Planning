@@ -1,5 +1,5 @@
 ## Project: 3D Motion Planning
-![Quad Image](./misc/enroute.png)
+![Quad Image](./Media/Motion_Planning.gif)
 
 ---
 
